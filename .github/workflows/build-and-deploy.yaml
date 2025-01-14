@@ -44,3 +44,4 @@ jobs:
       with:
         name: comfyui-image-${{ env.TAG_NAME }}
         path: comfyui.tar
+        
