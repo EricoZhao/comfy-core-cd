@@ -1,9 +1,11 @@
 # comfy-core-cd
 CD for ComfyUI to auto Build and Deploy.
 
+ <br/>  
 
 # How to use
-"""
+```bash
+
 #!/bin/bash
 
 # 克隆仓库
@@ -22,4 +24,4 @@ curl -L -o comfyui.tar $DOWNLOAD_URL
 # 加载 Docker 镜像到本地
 docker load -i comfyui.tar
 
-"""
+```
