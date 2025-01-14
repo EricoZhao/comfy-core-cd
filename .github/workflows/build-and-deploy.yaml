@@ -26,15 +26,15 @@ jobs:
         sudo cp gh_2.4.0_linux_amd64/bin/gh /usr/local/bin/
         gh --version  # 验证 GitHub CLI 是否成功安装
 
-    - name: Build Docker image
-      run: |
-        docker build -t comfyui:${{ env.TAG_NAME }} .
 
     - name: Extract tag name
       id: extract_tag
       run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
       
+    - name: Build Docker image
+      run: |
+        docker build -t comfyui:${{ env.TAG_NAME }} .
+ 
     - name: Save Docker image as tar file
       run: |
         docker save -o comfyui.tar comfyui:${{ env.TAG_NAME }}
