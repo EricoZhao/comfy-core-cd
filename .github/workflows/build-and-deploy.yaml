@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t comfyui:latest .
+        docker build -t comfyui:${{ env.TAG_NAME }} .
 
     - name: Extract tag name
       id: extract_tag
