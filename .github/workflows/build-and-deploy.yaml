@@ -27,8 +27,12 @@ jobs:
       run: |
         docker save -o comfyui.tar comfyui:latest
 
+    - name: Extract tag name
+      id: extract_tag
+      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
     - name: Upload Tag Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: comfyui-image-${GITHUB_REF##*/}
+        name: comfyui-image-${{ env.TAG_NAME }}
         path: comfyui.tar
