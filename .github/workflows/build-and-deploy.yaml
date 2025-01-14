@@ -40,7 +40,7 @@ jobs:
         echo "Tag ${{ env.TAG_NAME }} created and pushed successfully!"
 
     - name: Upload Tag Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: comfyui-image-${{ env.TAG_NAME }}
         path: comfyui.tar
