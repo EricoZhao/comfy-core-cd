@@ -38,10 +38,10 @@ jobs:
       id: extract_tag
       run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-    # - name: Create Release
-    #   id: create_release
-    #   run: |
-    #     echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+    - name: Create Release
+      id: create_release
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
     #     gh release create ${{ env.TAG_NAME }} -t ${{ env.TAG_NAME }} -n "${{ env.TAG_NAME }} release"
 
     - name: Upload Release Assets
