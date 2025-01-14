@@ -16,6 +16,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install GitHub CLI
+      run: |
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+        sudo apt-add-repository https://cli.github.com/packages
+        sudo apt-get update
+        sudo apt-get install gh
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
@@ -31,8 +38,12 @@ jobs:
       id: extract_tag
       run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-    - name: Upload Tag Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: comfyui-image-${{ env.TAG_NAME }}
-        path: comfyui.tar
+    - name: Create Release
+      id: create_release
+      run: |
+        gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
+        gh release create ${{ env.TAG_NAME }} -t ${{ env.TAG_NAME }} -n "${{ env.TAG_NAME }} release"
+
+    - name: Upload Release Asset
+      run: |
+        gh release upload ${{ env.TAG_NAME }} comfyui.tar
