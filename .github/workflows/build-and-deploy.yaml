@@ -1,0 +1,46 @@
+name: Build, Save, and Tag Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image
+      run: |
+        docker build -t comfyui:latest https://github.com/comfyanonymous/ComfyUI.git
+
+    - name: Save Docker image as tar file
+      run: |
+        docker save -o comfyui.tar comfyui:latest
+
+    - name: Create Tag Name
+      id: create_tag
+      run: |
+        TAG_NAME=$(date +'%m-%d-%y')
+        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+
+    - name: Create Tag
+      run: |
+        git tag ${{ env.TAG_NAME }}
+        git push origin ${{ env.TAG_NAME }}
+        echo "Tag ${{ env.TAG_NAME }} created and pushed successfully!"
+
+    - name: Upload Tag Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: comfyui-image-${{ env.TAG_NAME }}
+        path: comfyui.tar
