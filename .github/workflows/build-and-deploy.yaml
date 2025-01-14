@@ -41,10 +41,15 @@ jobs:
       run: |
         docker save -o comfyui.tar comfyui:${{ env.TAG_NAME }}
 
+        
+    - name: Extract tag name
+      id: tag_path
+      run: echo "TAG_PATH=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        
     - name: Create Release
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
     - name: Upload Release Assets
       run: |
-        gh release upload ${{ env.TAG_NAME }} comfyui.tar
+        gh release upload ${{ env.TAG_PATH }} comfyui.tar
