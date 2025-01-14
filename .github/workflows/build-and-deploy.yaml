@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+permissions: 
+  contents: write
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,7 +25,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t comfyui:latest https://github.com/comfyanonymous/ComfyUI.git
+        docker build -t comfyui:latest .
 
     - name: Save Docker image as tar file
       run: |
@@ -44,3 +48,4 @@ jobs:
       with:
         name: comfyui-image-${{ env.TAG_NAME }}
         path: comfyui.tar
+        

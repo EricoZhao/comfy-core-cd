@@ -13,7 +13,7 @@ git clone https://github.com/yourusername/comfy-core-cd.git
 cd comfy-core-cd
 
 # 获取最新Release下载链接
-DOWNLOAD_URL=$(curl -s https://api.github.com/repos/yourusername/comfy-core-cd/releases/latest \
+DOWNLOAD_URL=$(curl -s https://api.github.com/repos/EricoZhao/comfy-core-cd/releases/latest \
 | grep "browser_download_url.*comfyui.tar" \
 | cut -d : -f 2,3 \
 | tr -d \")
