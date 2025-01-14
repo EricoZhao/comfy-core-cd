@@ -36,13 +36,12 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t comfyui:${{ env.TAG_NAME }} .
- 
+
     - name: Save Docker image as tar file
       run: |
         docker save -o comfyui.tar comfyui:${{ env.TAG_NAME }}
 
     - name: Create Release
-      id: create_release
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
