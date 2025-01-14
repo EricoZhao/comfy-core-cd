@@ -2,15 +2,11 @@ name: Build, Save, and Tag Docker Image
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - '*'
 
 permissions: 
   contents: write
-
 
 jobs:
   build:
@@ -31,21 +27,8 @@ jobs:
       run: |
         docker save -o comfyui.tar comfyui:latest
 
-    - name: Create Tag Name
-      id: create_tag
-      run: |
-        TAG_NAME=$(date +'%m-%d-%y')
-        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
-
-    - name: Create Tag
-      run: |
-        git tag ${{ env.TAG_NAME }}
-        git push origin ${{ env.TAG_NAME }}
-        echo "Tag ${{ env.TAG_NAME }} created and pushed successfully!"
-
     - name: Upload Tag Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: comfyui-image-${{ env.TAG_NAME }}
+        name: comfyui-image-${GITHUB_REF##*/}
         path: comfyui.tar
-        
