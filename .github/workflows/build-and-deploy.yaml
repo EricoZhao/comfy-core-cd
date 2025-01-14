@@ -30,7 +30,7 @@ jobs:
       id: extract_tag
       run: |
         RELEASE_DATA=$(curl -s https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest) && \
-        TAG_NAME=$(echo $RELEASE_DATA | jq -r '.tag_name') && \
+        TAG_NAME=$(echo $RELEASE_DATA | jq -r '.tag_name' | sed 's/^v//') && \
         echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
       
     - name: Build Docker image
@@ -44,7 +44,6 @@ jobs:
     - name: Create Release
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-        gh release create ${{ env.TAG_NAME }} -t ${{ env.TAG_NAME }} -n "${{ env.TAG_NAME }} release"
 
     - name: Upload Release Assets
       run: |
