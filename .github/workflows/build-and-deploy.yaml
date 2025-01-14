@@ -21,7 +21,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t comfyui:latest https://github.com/comfyanonymous/ComfyUI.git
+        docker build -t comfyui:latest .
 
     - name: Save Docker image as tar file
       run: |
