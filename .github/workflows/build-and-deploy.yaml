@@ -16,15 +16,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install GitHub CLI
-      run: |
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-        sudo apt-add-repository https://cli.github.com/packages
-        sudo apt-get update
-        sudo apt-get install gh
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+
+    - name: Download GitHub CLI
+      run: |
+        curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.tar.gz
+        tar -xvf gh_2.4.0_linux_amd64.tar.gz
+        sudo cp gh_2.4.0_linux_amd64/bin/gh /usr/local/bin/
+        gh --version  # 验证 GitHub CLI 是否成功安装
 
     - name: Build Docker image
       run: |
@@ -41,9 +41,9 @@ jobs:
     - name: Create Release
       id: create_release
       run: |
-        gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
         gh release create ${{ env.TAG_NAME }} -t ${{ env.TAG_NAME }} -n "${{ env.TAG_NAME }} release"
 
-    - name: Upload Release Asset
+    - name: Upload Release Assets
       run: |
         gh release upload ${{ env.TAG_NAME }} comfyui.tar
