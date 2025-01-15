@@ -25,8 +25,8 @@ if [ -z "$RELEASE_DATA" ]; then
     exit 1
 fi
 
-# Get the download link
-DOWNLOAD_URL=$(echo $RELEASE_DATA | jq -r ".assets[] | select(.name == \"${FILE_NAME}\") | .browser_download_url")
+# Get the download link using grep and cut
+DOWNLOAD_URL=$(echo $RELEASE_DATA | grep -Po '"browser_download_url": "\K[^"]*' | grep "${FILE_NAME}")
 
 # Check if the download link exists
 if [ -z "$DOWNLOAD_URL" ]; then

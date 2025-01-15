@@ -13,7 +13,6 @@ sudo apt-get install -y podman
 sudo apt-get install -y python3-pip
 pip3 install podman-compose
 
-
 ```
 
 
@@ -38,6 +37,5 @@ chmod +x download-docker-image.sh
 
 # step 4: Instantiating the image
 podman-compose up -d
-
 
 ```
