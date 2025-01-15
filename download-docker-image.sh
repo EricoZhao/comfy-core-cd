@@ -1,34 +1,40 @@
 #!/bin/bash
 
-# 参数设置
+# Setting parameters
 GITHUB_REPO="EricoZhao/comfy-core-cd"
-TAG_NAME="01-15-25"
+TAG_NAME=""
 FILE_NAME="comfyui.tar"
 OUTPUT_DIR="./"
 
-# 创建下载目录
+# Creating a download directory
 mkdir -p $OUTPUT_DIR
 cd $OUTPUT_DIR
 
-# 获取Release信息
-RELEASE_DATA=$(curl -s -H "https://api.github.com/repos/${GITHUB_REPO}/releases/tags/${TAG_NAME}")
+# Check if TAG_NAME is empty
+if [ -z "$TAG_NAME" ]; then
+    echo "Tag name is empty, fetching the latest release..."
+    RELEASE_DATA=$(curl -s https://api.github.com/repos/${GITHUB_REPO}/releases/latest)
+else
+    # Get the Release information for a given tag
+    RELEASE_DATA=$(curl -s https://api.github.com/repos/${GITHUB_REPO}/releases/tags/${TAG_NAME})
+fi
 
-# 检查Release是否存在
+# Check if Release exists
 if [ -z "$RELEASE_DATA" ]; then
-    echo "Release for tag ${TAG_NAME} not found."
+    echo "Release not found."
     exit 1
 fi
 
-# 获取下载链接
+# Get the download link
 DOWNLOAD_URL=$(echo $RELEASE_DATA | jq -r ".assets[] | select(.name == \"${FILE_NAME}\") | .browser_download_url")
 
-# 检查下载链接是否存在
+# Check if the download link exists
 if [ -z "$DOWNLOAD_URL" ]; then
     echo "${FILE_NAME} not found in the release assets."
     exit 1
 fi
 
-# 下载文件
+# Download image
 curl -L -o ${FILE_NAME} ${DOWNLOAD_URL}
 
 if [ $? -eq 0 ]; then

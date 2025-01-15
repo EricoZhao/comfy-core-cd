@@ -10,7 +10,7 @@ CD for ComfyUI to auto Build and Deploy.
 git clone https://github.com/EricoZhao/comfy-core-cd.git
 cd comfy-core-cd
 
-# Modify parameters
+# Modify parameters(if need)
 - ./download-docker-image.sh -> "TAG_NAME"
 
 # step 2: Grant executable privileges
