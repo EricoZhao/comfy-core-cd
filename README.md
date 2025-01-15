@@ -14,7 +14,7 @@ cd comfy-core-cd
 
 ```
 
-Modify parameters
+Modify parameters  
 - ./download-docker-image.sh -> "TAG_NAME"、"VENV_DIR"
 
 step 2: Grant executable privileges
@@ -24,18 +24,18 @@ chmod +x download-docker-image.sh
 
 ```
 
-step 3: Run the script to download the image
+step 3: Run the script to download the image  
 ```bash
 
 ./download-docker-image.sh
 
 ```
 
-Modify parameters
+Modify parameters  
 - ./.env -> "PROJECT_DIR"、"VENV_DIR"
 - ./docker-compose.yml -> "ports"
 
-step 4: Instantiating the image
+step 4: Instantiating the image  
 ```bash
 
 docker-compose up -d
