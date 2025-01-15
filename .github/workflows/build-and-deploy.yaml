@@ -2,15 +2,11 @@ name: Build, Save, and Tag Docker Image
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - '*'
 
 permissions: 
   contents: write
-
 
 jobs:
   build:
@@ -23,29 +19,37 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
+    - name: Download GitHub CLI
+      run: |
+        curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.tar.gz
+        tar -xvf gh_2.4.0_linux_amd64.tar.gz
+        sudo cp gh_2.4.0_linux_amd64/bin/gh /usr/local/bin/
+        gh --version  # 验证 GitHub CLI 是否成功安装
+
+    - name: Extract tag name
+      id: extract_tag
+      run: |
+        RELEASE_DATA=$(curl -s https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest) && \
+        TAG_NAME=$(echo $RELEASE_DATA | jq -r '.tag_name' | sed 's/^v//') && \
+        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+      
     - name: Build Docker image
       run: |
-        docker build -t comfyui:latest .
+        docker build -t comfyui:${{ env.TAG_NAME }} .
 
     - name: Save Docker image as tar file
       run: |
-        docker save -o comfyui.tar comfyui:latest
+        docker save -o comfyui.tar comfyui:${{ env.TAG_NAME }}
 
-    - name: Create Tag Name
-      id: create_tag
-      run: |
-        TAG_NAME=$(date +'%m-%d-%y')
-        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
-
-    - name: Create Tag
-      run: |
-        git tag ${{ env.TAG_NAME }}
-        git push origin ${{ env.TAG_NAME }}
-        echo "Tag ${{ env.TAG_NAME }} created and pushed successfully!"
-
-    - name: Upload Tag Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: comfyui-image-${{ env.TAG_NAME }}
-        path: comfyui.tar
         
+    - name: Extract tag name
+      id: tag_path
+      run: echo "TAG_PATH=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        
+    - name: Create Release
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+    - name: Upload Release Assets
+      run: |
+        gh release upload ${{ env.TAG_PATH }} comfyui.tar
