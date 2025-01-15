@@ -1,0 +1,27 @@
+services:
+  comfyui:
+    image: comfyui:latest
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+    volumes:
+      - ${PROJECT_DIR}/custom_nodes:/comfyui/custom_nodes
+      - ${PROJECT_DIR}/models:/comfyui/models
+      - ${PROJECT_DIR}/web:/comfyui/web
+
+      - ${PROJECT_DIR}/extra_model_paths.yaml:/comfyui/extra_model_paths.yaml
+
+      - ${VENV_DIR}/venv:/comfyui/venv
+    ports:
+      - "6006:8188"
+    command: >
+      /bin/bash -c "
+      python -m venv /comfyui/venv &&
+      source /comfyui/venv/bin/activate &&
+      python main.py --listen --lowvram
+      "
+
+env_file:
+  - .env

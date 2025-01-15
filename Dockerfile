@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y git curl sed \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 下载并解压最新的Release版本（无 jq）
+# 下载并解压最新的Release版本
 RUN RELEASE_DATA=$(curl -s https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest) && \
     RELEASE_URL=$(echo $RELEASE_DATA | grep -oP '"tarball_url": "\K(.*?)(?=")') && \
     curl -L $RELEASE_URL -o comfyui.tar.gz && \
