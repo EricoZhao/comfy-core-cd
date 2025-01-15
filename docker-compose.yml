@@ -20,6 +20,7 @@ services:
       /bin/bash -c "
       python -m venv /comfyui/venv &&
       source /comfyui/venv/bin/activate &&
+      python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple &&
       python main.py --listen --lowvram
       "
 
