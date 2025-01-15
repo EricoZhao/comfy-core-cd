@@ -1,0 +1,29 @@
+# cleanup.txt
+
+
+# folders
+
+/.ci
+/.git
+/.github
+/__pycache__
+/custom_nodes
+/input
+/models
+/notebooks
+/output
+/script_examples
+/tests
+/tests-unit
+/web
+
+
+# files
+
+/.gitattributes
+/.gitignore
+/CODEOWNERS
+/CONTRIBUTING.md
+/extra_model_paths.yaml.example
+/LICENSE
+/README.md
