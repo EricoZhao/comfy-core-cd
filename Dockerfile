@@ -8,12 +8,18 @@ RUN apt-get update && apt-get install -y git curl jq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 下载并解压最新的Release版本
+# 下载并解压最新的 Release 版本
 RUN RELEASE_DATA=$(curl -s https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest) && \
-    RELEASE_URL=$(echo $RELEASE_DATA | jq -r '.tarball_url') && \
-    curl -L $RELEASE_URL -o comfyui.tar.gz && \
-    mkdir comfyui && \
-    tar -xzf comfyui.tar.gz -C comfyui --strip-components=1
+    if echo $RELEASE_DATA | jq .; then \
+        RELEASE_URL=$(echo $RELEASE_DATA | jq -r '.tarball_url'); \
+        curl -L $RELEASE_URL -o comfyui.tar.gz && \
+        mkdir comfyui && \
+        tar -xzf comfyui.tar.gz -C comfyui --strip-components=1 ; \
+    else \
+        echo "Error parsing release data, received: $RELEASE_DATA"; \
+        exit 1; \
+    fi
+
 
 # 将要删除的文件和文件夹加载到Dockerfile中
 COPY rm_list_in_image.txt .
