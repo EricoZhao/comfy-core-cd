@@ -8,10 +8,22 @@ CD for ComfyUI to auto Build and Deploy.
 
 #!/bin/bash
 
-# 赋予可执行权限
+# step 1: Clone the repository and into
+git clone https://github.com/EricoZhao/comfy-core-cd.git
+cd comfy-core-cd
+
+# step 2: Grant executable privileges
 chmod +x download-docker-image.sh
 
-# 运行脚本
+# step 3: Run the script to download the image
 ./download-docker-image.sh
+
+# step 4: Modify parameters
+- ./.env -> "PROJECT_DIR"、"VENV_DIR"
+- ./docker-compose.yml -> "ports"
+
+# step 5: Instantiating the image
+docker-compose up -d
+
 
 ```
