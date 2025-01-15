@@ -11,6 +11,9 @@ services:
       - ${PROJECT_DIR}/models:/comfyui/models
       - ${PROJECT_DIR}/web:/comfyui/web
 
+      - ${PROJECT_DIR}/input:/comfyui/input
+      - ${PROJECT_DIR}/output:/comfyui/output
+
       - ${PROJECT_DIR}/extra_model_paths.yaml:/comfyui/extra_model_paths.yaml
 
       - ${VENV_DIR}/venv:/comfyui/venv

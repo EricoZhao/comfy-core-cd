@@ -4,6 +4,19 @@ CD for ComfyUI to auto Build and Deploy.
  <br/>  
 
 # How to use
+
+```bash
+# Make sure you have podman and python installed.
+
+sudo apt-get update
+sudo apt-get install -y podman
+sudo apt-get install -y python3-pip
+pip3 install podman-compose
+
+
+```
+
+
 ```bash
 
 # step 1: Clone the repository and into
@@ -24,7 +37,7 @@ chmod +x download-docker-image.sh
 - ./docker-compose.yml -> "ports"
 
 # step 4: Instantiating the image
-docker-compose up -d
+podman-compose up -d
 
 
 ```
