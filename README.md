@@ -5,11 +5,12 @@ CD for ComfyUI to auto Build and Deploy.
 
 # How to use
 
-## Usage scenario 01 : Deploy ComfyUI from Docker Hub
+## Usage scenario 01 : Deploy ComfyUI with Docker Image  
 
 ```bash
-# Make sure you have podman and python installed.
+#!/bin/bash
 
+# Make sure you have podman(/docker) and python installed.
 sudo apt-get update
 sudo apt-get install -y podman
 sudo apt-get install -y python3-pip
@@ -18,6 +19,7 @@ pip3 install podman-compose
 ```
 
 ```bash
+#!/bin/bash
 
 # step 1: Clone the repository and into
 git clone https://github.com/EricoZhao/comfy-core-cd.git
@@ -45,14 +47,31 @@ podman-compose up -d
 ```
 
 
-## Usage scenario 02 : Auto Install ComfyUI with Jupter Notebook
+## Usage scenario 02 : Auto Install ComfyUI by Jupyter Notebook  
+
+Only need to download the ipynb file and run it in a Jupyter Notebook on Server.  
+
+### Steps:  
+1. Download the ipynb file from [here](https://github.com/EricoZhao/comfy-core-cd/blob/main/docs/ComfyUI_Auto_Build_on_Server.ipynb)
+2. Modify the parameters in the ipynb file according to your environment.  
+3. Run it in a Jupyter Notebook on Server
+4. The notebook will automatically download and install ComfyUI for you.  
+
+### Feature:  
+- Auto Download and Install ComfyUI with version you choose.  
+- Conda as the environment manager and install automatically.  
+- Optional folder mount path for (custom_nodes, models)
+- Running in the background, saving a separate log.
 
 
 
-## Usage scenario 03 : Continerized Deployment with Minikube and K3s
+
+## Usage scenario 03 : Continerized Deployment with Minikube(host node) and K3s(work node)  
 
 
 ```bash
+#!/bin/bash
+
 # Host Machine
 
 minikube start --driver=docker --mount --mount-string="D:\DEV\app\comfy-core-cd\comfyui:/mnt/app/comfyui"
@@ -85,6 +104,8 @@ kubectl get nodes
 ```
 
 ```bash
+#!/bin/bash
+
 # Work Machine
 
 # 安装 k8s
