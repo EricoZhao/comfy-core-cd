@@ -46,7 +46,7 @@ podman load -i ./comfyui.tar
 podman-compose up -d
 
 ```
-
+ <br/>  
 
 ## Usage scenario 02 : Auto Install ComfyUI by Jupyter Notebook  
 
@@ -65,7 +65,7 @@ Only need to download the ipynb file and run it in a Jupyter Notebook on Server.
 - Running in the background, saving a separate log.  
 
 
-
+ <br/>  
 
 ## Usage scenario 03 : Deployment by Container Orchestration with Minikube(host node) and K3s(work node)  
 
